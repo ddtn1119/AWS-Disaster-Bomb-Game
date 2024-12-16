@@ -457,12 +457,14 @@ def PlayIncidentBombGame(player_id, scenario_set):
     # at the end where you show the final screen:
     if score >= pass_criteria[scenario_set] * 10:  
         status = "Win"
+        upload_game_asset_to_s3(player_id, score, scenario_set, num_passed_scenarios, status)
         new_best_score = store_game_data_in_database(player_id, score, scenario_set, num_passed_scenarios, status)
         current_total_score = get_player_score(player_id)
         screen.blit(happy_city_img, (0, 0))
         final_text = font.render(f"Game Clear: Agent {player_id}, you have won the game and restore the happiness of this world! Game Score: {score} | Current Total: {current_total_score} | Best Score: {new_best_score}", True, WHITE)
     else:
         status = "Lose"
+        upload_game_asset_to_s3(player_id, score, scenario_set, num_passed_scenarios, status)
         new_best_score = store_game_data_in_database(player_id, score, scenario_set, num_passed_scenarios, status)
         current_total_score = get_player_score(player_id)
         screen.blit(destroyed_world_img, (0, 0))
