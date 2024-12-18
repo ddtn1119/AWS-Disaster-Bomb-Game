@@ -16,6 +16,47 @@ from decimal import Decimal
 s3 = boto3.client('s3')
 bucket_name = 'disaster-bomb-game-bucket'
 
+# function to create Amazon S3 bucket if it does not exist yet.
+def create_s3_bucket_if_not_exists(bucket_name):
+    try:
+        # Check if the bucket exists
+        s3.head_bucket(Bucket=bucket_name)
+        print(f"Bucket {bucket_name} already exists")
+        return True
+    except ClientError as e:
+        error_code = e.response['Error']['Code']
+        if error_code == '404':
+            try:
+                # Create the bucket
+                s3.create_bucket(
+                    Bucket=bucket_name,
+                    CreateBucketConfiguration={
+                        'LocationConstraint': s3.meta.region_name
+                    }
+                )
+                print(f"Bucket {bucket_name} created successfully")
+                
+                # Add versioning to the bucket (recommended for game assets)
+                s3.put_bucket_versioning(
+                    Bucket=bucket_name,
+                    VersioningConfiguration={
+                        'Status': 'Enabled'
+                    }
+                )
+                print(f"Versioning enabled for bucket {bucket_name}")
+                
+                return True
+            except ClientError as create_error:
+                print(f"Error creating bucket: {create_error}")
+                return False
+        else:
+            print(f"Error checking bucket: {e}")
+            return False
+    except NoCredentialsError:
+        print("No valid AWS credentials found. Please configure them.")
+        return False
+
+
 # function to upload game asset to Amazon S3
 def upload_game_asset_to_s3(player_id, score, chosen_set, num_passed, status):
     try:
@@ -69,6 +110,11 @@ def upload_game_asset_to_s3(player_id, score, chosen_set, num_passed, status):
         print("No valid AWS credentials found. Please configure them.")
     except Exception as e:
         print(f"Error occurs when uploading game data to S3: {e}")
+
+# create the bucket if it doesn't exist
+if not create_s3_bucket_if_not_exists(bucket_name):
+    print("Failed to initialize S3 bucket. Please check your AWS credentials and permissions.")
+    # handle the error appropriately - maybe exit the game or fall back to local storage
 
 
 # function to create an Amazon DynamoDB table if it does not exist yet.
