@@ -9,4 +9,4 @@ The sets of 15 and 20 will have three and four colours (red, green, yellow, and 
 For each set, the player has to pass at least 60% to win the game and "save the world". 
 There will be a limited number of "helps" that help the players cut the correct bomb fuse and prevent the disaster scenarios in each set.
 
-You can access my full blog describing this game project on [AWS Cloud Community](https://community.aws/content/2pbDb5b6lPZIlazd8bwIiOQmcnM/disaster-bomb-game-an-online-survival-game-powered-by-amazon-q).
+You can access my full blog describing *Disaster Bomb Game* on [AWS Cloud Community](https://community.aws/content/2pbDb5b6lPZIlazd8bwIiOQmcnM/disaster-bomb-game-an-online-survival-game-powered-by-amazon-q).
