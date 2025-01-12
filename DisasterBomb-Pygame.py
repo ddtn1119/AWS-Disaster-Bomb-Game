@@ -507,21 +507,21 @@ def PlayIncidentBombGame(player_id, scenario_set):
         new_best_score = store_game_data_in_database(player_id, score, scenario_set, num_passed_scenarios, status)
         current_total_score = get_player_score(player_id)
         screen.blit(happy_city_img, (0, 0))
-        final_text = font.render(f"Game Clear: Agent {player_id}, you have won the game and restore the happiness of this world! Game Score: {score} | Current Total: {current_total_score} | Best Score: {new_best_score}", True, WHITE)
+        final_text = font.render(f"Game Clear: Player {player_id}, you have won the game and restore the happiness of this world! Game Score: {score} | Current Total: {current_total_score} | Best Score: {new_best_score}", True, WHITE)
     else:
         status = "Lose"
         upload_game_asset_to_s3(player_id, score, scenario_set, num_passed_scenarios, status)
         new_best_score = store_game_data_in_database(player_id, score, scenario_set, num_passed_scenarios, status)
         current_total_score = get_player_score(player_id)
         screen.blit(destroyed_world_img, (0, 0))
-        final_text = font.render(f"Game Over: Agent {player_id}, you failed to save the world! Game Score: {score} | Current Total: {current_total_score} | Best Score: {new_best_score}", True, RED)
+        final_text = font.render(f"Game Over: Player {player_id}, you failed to save the world! Game Score: {score} | Current Total: {current_total_score} | Best Score: {new_best_score}", True, RED)
 
-    # Update the display with new scores
+    # update the display with new scores
     screen.blit(final_text, (200, 200))
     pygame.display.flip()
-    # Wait for a moment to show the final screen
-    pygame.time.wait(2000)  # Wait for 2 seconds
-    # When transitioning to a new set or replaying, make sure to get the latest scores
+    # wait for a moment to show the final screen
+    pygame.time.wait(2000)  # wait for 2 seconds
+    # when transitioning to a new set or replaying, make sure to get the latest scores
     current_total_score = get_player_score(player_id)
     best_score = get_best_score(player_id)
     # display the replay button after finishing the game.
@@ -541,7 +541,7 @@ def PlayIncidentBombGame(player_id, scenario_set):
                 if replay_button.collidepoint(event.pos):
                     main()
                     waiting = False
-
+# main function
 def main():
     print("Open Pygame window...")
     time.sleep(0.5)
@@ -576,7 +576,7 @@ def main():
         "- For set of 20 (difficult level): Choose to cut one of the four strings and pass at least 12 scenarios to win the game.",
         "Please reuse your player ID everytime you play the game so your cumulative and best scores can be saved.",
         "Good luck, Agent!",
-        "@2024 Disaster Bomb Game"
+        "@2024 Disaster Bomb Game, Powered by Amazon Q."
     ]
     display_message(welcome_messages, delay=5000)
     # display input prompt.
@@ -605,7 +605,7 @@ def main():
     # confirm player ID and continue.
     ready_messages = [
         f"Player ID: {player_id}",
-        f"Welcome, Agent {player_id}!"
+        f"Welcome, Player {player_id}!"
     ]
     display_message(ready_messages)
     # ready confirmation
@@ -669,8 +669,9 @@ def main():
                     choosing_set = False
         pygame.display.flip()
     # Start the game
-    display_message(["Let's start the game! Pygame is initialized..."], delay=2000)
+    display_message(["Let's start the game! Pygame is initialized..."], delay=1000)
     PlayIncidentBombGame(player_id, set_choice)
 
+# call the main function
 if __name__ == "__main__":
     main()
